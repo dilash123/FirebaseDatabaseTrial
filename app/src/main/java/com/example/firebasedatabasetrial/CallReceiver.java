@@ -26,7 +26,11 @@ public class CallReceiver extends PhonecallReceiver {
     @Override
     protected void onIncomingCallReceived(Context ctx, String number, Date start)
     {
-        checkNumberInDatabase(ctx,number);
+        //Toast.makeText(ctx,"heloo",Toast.LENGTH_SHORT).show();
+        Intent service = new Intent(ctx, MyService.class);
+        service.putExtra("number",number);
+        ctx.startService(service);
+        //checkNumberInDatabase(ctx,number);
         //
        // Toast.makeText(ctx,"Call Received "+number, Toast.LENGTH_SHORT).show();
         //checkNumberInDatabase(ctx,number);
@@ -68,11 +72,11 @@ public class CallReceiver extends PhonecallReceiver {
     public void checkNumberInDatabase(final Context ctx, final String number)
     {
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("users");
-        myRef.orderByChild("mobile").equalTo(number).addChildEventListener(new ChildEventListener() {
+        myRef = database.getReference("students");
+        myRef.orderByChild("contact").equalTo(number).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                String name= dataSnapshot.child("username").getValue().toString();
+                String name= dataSnapshot.child("name").getValue().toString();
                 Toast.makeText(ctx,"Call By "+name, Toast.LENGTH_SHORT).show();
 
                 final Intent intent = new Intent(ctx, MyCustomDialog.class);

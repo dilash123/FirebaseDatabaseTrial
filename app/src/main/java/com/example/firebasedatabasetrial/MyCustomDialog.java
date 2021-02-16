@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 public class MyCustomDialog extends Activity
 {
-    TextView tv_client;
-    String phone_no;
+    TextView tv_client, tvClientNumber;
+    String phone_no, name;
     Button dialog_ok;
 
     @Override
@@ -33,7 +33,9 @@ public class MyCustomDialog extends Activity
             this.getWindow().setAttributes(params);*/
 
             phone_no    =   getIntent().getExtras().getString("phone_no");
-            tv_client.setText(""+phone_no +" is calling you");
+            name    =   getIntent().getExtras().getString("name");
+            tv_client.setText(""+name +" is calling you");
+            tvClientNumber.setText(phone_no);
 
             dialog_ok.setOnClickListener(new View.OnClickListener()
             {
@@ -56,6 +58,7 @@ public class MyCustomDialog extends Activity
     private void initializeContent()
     {
         tv_client   = (TextView) findViewById(R.id.tv_client);
+        tvClientNumber   = (TextView) findViewById(R.id.tv_client_number);
        // dialog_ok   = (Button) findViewById(R.id.dialog_ok);
     }
 }
