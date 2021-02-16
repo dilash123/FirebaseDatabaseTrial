@@ -12,7 +12,10 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -36,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private UserAdapter uadapter;
     private EditText etSearch;
+    private static final int SYSTEM_ALERT_WINDOW_PERMISSION = 2084;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         initializeApp();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+
+            RuntimePermissionForUser();
+        }
 
 
 
@@ -55,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
                 requestPermissions(new String[]{Manifest.permission.READ_CALL_LOG,Manifest.permission.READ_PHONE_STATE},1);
             }
         }
+
+        //askPermission();
 
 
 
@@ -135,5 +146,26 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(uadapter);
 
+    }
+
+    private void askPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+           /* startService(new Intent(MainActivity.this, FloatingViewService.class));
+            finish();*/
+        } else if (Settings.canDrawOverlays(this)) {
+           /* startService(new Intent(MainActivity.this, FloatingViewService.class));
+            finish();*/
+        } else {
+            askPermission();
+            Toast.makeText(this, "You need System Alert Window Permission to do this", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void RuntimePermissionForUser() {
+
+        Intent PermissionIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + getPackageName()));
+
+        startActivityForResult(PermissionIntent, SYSTEM_ALERT_WINDOW_PERMISSION);
     }
 }

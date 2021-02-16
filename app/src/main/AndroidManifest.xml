@@ -32,6 +32,10 @@
             />
 
         <service android:enabled="true" android:name=".MyService" />
+        <service
+            android:name=".FloatingViewService"
+            android:enabled="true"
+            android:exported="false" />
 
     <receiver android:name=".CallReceiver"
             android:exported="true"

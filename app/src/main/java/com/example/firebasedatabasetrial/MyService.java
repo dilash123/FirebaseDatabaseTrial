@@ -85,7 +85,14 @@ public class MyService extends Service
                 String name= dataSnapshot.child("name").getValue().toString();
                 Toast.makeText(ctx,"Call By "+name, Toast.LENGTH_SHORT).show();
 
-                final Intent intent = new Intent(ctx, MyCustomDialog.class);
+                /*startService(new Intent(ctx, FloatingViewService.class));*/
+                Intent service = new Intent(ctx, FloatingViewService.class);
+                service.putExtra("number",number);
+                service.putExtra("name",name);
+                ctx.startService(service);
+
+
+             /*   final Intent intent = new Intent(ctx, MyCustomDialog.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 intent.putExtra("phone_no",number);
@@ -98,7 +105,7 @@ public class MyService extends Service
                     {
                         ctx.startActivity(intent);
                     }
-                },2000);
+                },2000);*/
 
 
             }
